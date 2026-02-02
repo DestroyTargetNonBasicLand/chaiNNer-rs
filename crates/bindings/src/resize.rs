@@ -56,7 +56,7 @@ pub fn resize<'py>(
     new_size: (u32, u32),
     filter: ResizeFilter,
     mut gamma_correction: bool,
-) -> PyResult<Bound<'py, PyArray3<f32>>> {
+) -> PyResult<&'py PyArray3<f32>> {
     let new_size: Size = new_size.into();
     let filter: Filter = filter.into();
 
@@ -150,7 +150,7 @@ pub fn resize<'py>(
             img: ImageView<'_, P>,
             new_size: Size,
             filter: Filter,
-        ) -> PyResult<Bound<'py, PyArray3<f32>>>
+        ) -> PyResult<&'py PyArray3<f32>>
         where
             P: Flatten + ClipFloat + Default + Copy + Sync + Send + 'static,
             FloatPixelFormat<P>: PixelFormat<InputPixel = P, OutputPixel = P>,
@@ -228,7 +228,7 @@ pub fn resize<'py>(
         img: Image<P>,
         new_size: Size,
         filter: Filter,
-    ) -> PyResult<Bound<PyArray3<f32>>>
+    ) -> PyResult<&PyArray3<f32>>
     where
         P: Flatten + ClipFloat + Default + Copy + Send + 'static,
         FloatPixelFormat<P>: PixelFormat<InputPixel = P, OutputPixel = P>,
