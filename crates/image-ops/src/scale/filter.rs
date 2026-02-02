@@ -68,8 +68,9 @@ fn lagrange(x: f32, support: f32) -> f32 {
 }
 
 // Taken from
-// https://github.com/ImageMagick/ImageMagick/blob/cbc4273c00e9b8eaf817401086e6c5e3fe38ba9a/MagickCore/resize.c#L428
+// https://github.com/ImageMagick/ImageMagick/blob/b5f748c38ad5bb6b58f46411b1bcb78392b5f575/MagickCore/resize.c#L428
 fn mks2013(x: f32) -> f32 {
+    let x = x.abs();
     if x < 0.5 {
         0.625 + 1.75 * (0.5 - x) * (0.5 + x)
     } else if x < 1.5 {
@@ -82,18 +83,19 @@ fn mks2013(x: f32) -> f32 {
 }
 
 // Taken from
-// https://github.com/ImageMagick/ImageMagick/blob/cbc4273c00e9b8eaf817401086e6c5e3fe38ba9a/MagickCore/resize.c#L448
+// https://github.com/ImageMagick/ImageMagick/blob/b5f748c38ad5bb6b58f46411b1bcb78392b5f575/MagickCore/resize.c#L448
 fn mks2021(x: f32) -> f32 {
+    let x = x.abs();
     if x < 0.5 {
         577.0 / 576.0 - 239.0 / 144.0 * x * x
     } else if x < 1.5 {
-        (35.0 / 36.0) * (x - 1.0) * (x - 239.0 / 140.0)
+        35.0 / 36.0 * (x - 1.0) * (x - 239.0 / 140.0)
     } else if x < 2.5 {
-        (1.0 / 6.0) * (x - 2.0) * (65.0 / 24.0 - x)
+        1.0 / 6.0 * (x - 2.0) * (65.0 / 24.0 - x)
     } else if x < 3.5 {
-        (1.0 / 36.0) * (x - 3.0) * (x - 3.75)
+        1.0 / 36.0 * (x - 3.0) * (x - 3.75)
     } else if x < 4.5 {
-        -(1.0 / 288.0) * (x - 4.5) * (x - 4.5)
+        -1.0 / 288.0 * (x - 4.5) * (x - 4.5)
     } else {
         0.0
     }
@@ -143,11 +145,11 @@ impl From<Filter> for resize::Type {
             }
             Filter::Gauss => resize::Type::Gaussian,
             Filter::MKS2013 => {
-                let filter = resize::Filter::new(Box::new(mks2013), 2.5);
+                let filter = resize::Filter::new(Box::new(|x| mks2013(x)), 2.5);
                 resize::Type::Custom(filter)
             }
             Filter::MKS2021 => {
-                let filter = resize::Filter::new(Box::new(mks2021), 4.5);
+                let filter = resize::Filter::new(Box::new(|x| mks2021(x)), 4.5);
                 resize::Type::Custom(filter)
             }
 		}
