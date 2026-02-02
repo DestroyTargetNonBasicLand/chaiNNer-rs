@@ -293,4 +293,34 @@ mod tests {
         let nn = super::scale(original.view(), new_size, filter).unwrap();
         nn.snapshot("resize_lagrange_200");
     }
+
+    #[test]
+    fn scale_mks2013() {
+        let filter = super::Filter::MKS2013;
+
+        let original = small_portrait();
+        let new_size = original.size().scale(4.);
+        let nn = super::scale(original.view(), new_size, filter).unwrap();
+        nn.snapshot("resize_mks2013_4x");
+
+        let original = read_portrait();
+        let new_size = Size::new(200, 200);
+        let nn = super::scale(original.view(), new_size, filter).unwrap();
+        nn.snapshot("resize_mks2013_200");
+    }
+
+    #[test]
+    fn scale_mks2021() {
+        let filter = super::Filter::MKS2021;
+
+        let original = small_portrait();
+        let new_size = original.size().scale(4.);
+        let nn = super::scale(original.view(), new_size, filter).unwrap();
+        nn.snapshot("resize_mks2021_4x");
+
+        let original = read_portrait();
+        let new_size = Size::new(200, 200);
+        let nn = super::scale(original.view(), new_size, filter).unwrap();
+        nn.snapshot("resize_mks2021_200");
+    }
 }
