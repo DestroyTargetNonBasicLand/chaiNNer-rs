@@ -143,12 +143,12 @@ impl From<Filter> for resize::Type {
             }
             Filter::Gauss => resize::Type::Gaussian,
             Filter::MKS2013 => {
-                let filter = ResizeFilter::new(Box::new(mks2013), 2.5);
-                ResizeType::Custom(filter)
+                let filter = resize::Filter::new(Box::new(mks2013), 2.5);
+                resize::Type::Custom(filter)
             }
             Filter::MKS2021 => {
-                let filter = ResizeFilter::new(Box::new(mks2021), 4.5);
-                ResizeType::Custom(filter)
+                let filter = resize::Filter::new(Box::new(mks2021), 4.5);
+                resize::Type::Custom(filter)
             }
 		}
     }
