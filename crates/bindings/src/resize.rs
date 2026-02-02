@@ -24,6 +24,8 @@ pub enum ResizeFilter {
     Lanczos = 4,
     Lagrange = 7,
     Gauss = 5,
+    MKS2013 = 12,
+    MKS2021 = 13,
 }
 
 impl From<ResizeFilter> for Filter {
@@ -41,6 +43,8 @@ impl From<ResizeFilter> for Filter {
             ResizeFilter::Lanczos => Filter::Lanczos3,
             ResizeFilter::Lagrange => Filter::Lagrange,
             ResizeFilter::Gauss => Filter::Gauss,
+            ResizeFilter::MKS2013 => Filter::MKS2013,
+            ResizeFilter::MKS2021 => Filter::MKS2021,
         }
     }
 }
@@ -52,7 +56,7 @@ pub fn resize<'py>(
     new_size: (u32, u32),
     filter: ResizeFilter,
     mut gamma_correction: bool,
-) -> PyResult<&'py PyArray3<f32>> {
+) -> PyResult<Bound<'py, PyArray3<f32>>> {
     let new_size: Size = new_size.into();
     let filter: Filter = filter.into();
 
@@ -146,7 +150,7 @@ pub fn resize<'py>(
             img: ImageView<'_, P>,
             new_size: Size,
             filter: Filter,
-        ) -> PyResult<&'py PyArray3<f32>>
+        ) -> PyResult<Bound<'py, PyArray3<f32>>>
         where
             P: Flatten + ClipFloat + Default + Copy + Sync + Send + 'static,
             FloatPixelFormat<P>: PixelFormat<InputPixel = P, OutputPixel = P>,
@@ -224,7 +228,7 @@ pub fn resize<'py>(
         img: Image<P>,
         new_size: Size,
         filter: Filter,
-    ) -> PyResult<&PyArray3<f32>>
+    ) -> PyResult<Bound<PyArray3<f32>>>
     where
         P: Flatten + ClipFloat + Default + Copy + Send + 'static,
         FloatPixelFormat<P>: PixelFormat<InputPixel = P, OutputPixel = P>,
