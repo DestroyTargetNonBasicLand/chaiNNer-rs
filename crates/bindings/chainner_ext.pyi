@@ -80,6 +80,8 @@ class ResizeFilter(Enum):
     Lanczos = 4
     Lagrange = 7
     Gauss = 5
+    MKS2013 = 12
+    MKS2021 = 13
 
 def resize(
     img: np.ndarray,
